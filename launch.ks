@@ -1,37 +1,40 @@
-CLEARSCREEN.
+clearscreen.
+set TargetHeight to 75000.
+set m0 to SHIP:MASS.
 
-SET TargetHeight TO 75000.
-SET m0 TO SHIP:MASS.
-
-PRINT "Start Rocket".
+print "Start Rocket".
 WAIT 1.
 STAGE.
-PRINT "Stage activated".
-LOCK THROTTLE TO 1.0.
-LOCK STEERING TO HEADING(90,90).
+lock THROTTLE to 1.0.
+lock STEERING to HEADING(90,90).
 
 
 
 UNTIL ORBIT:apoapsis >= 15000{
-    PRINT "Ap: " + ORBIT:apoapsis.
-    PRINT "Pe: " + ORBIT:periapsis.
-    PRINT "Fuel: " + (m0-SHIP:MASS).
-    WAIT 0.1.
-    CLEARSCREEN.
+    set fuel to (m0-SHIP:MASS).
+    print "Ap: " + ORBIT:apoapsis.
+    print "Pe: " + ORBIT:periapsis.
+    print "Fuel: " + fuel.
+    if fuel < 1 {wait 1. stage.}
+    wait 0.1.
+    clearscreen.
 }
 
 UNTIL ORBIT:apoapsis >= TargetHeight {
-    LOCK STEERING TO HEADING(90, 90-90*(SHIP:altitude/TargetHeight)).
-    PRINT "Ap: " + ORBIT:apoapsis.
-    PRINT "Pe: " + ORBIT:periapsis.
-    PRINT "Angle: " + (90-90*(SHIP:altitude/TargetHeight)).
-    CLEARSCREEN.
+    set angle to (90-90*arcTan(SHIP:altitude/TargetHeight)).
+
+    lock STEERING to angle.
+    
+    print "Ap: " + ORBIT:apoapsis.
+    print "Pe: " + ORBIT:periapsis.
+    print "Angle: " + angle.
+    clearscreen.
 }
 
 
-LOCK THROTTLE TO 0.
-LOCK STEERING TO heading(90,0).
+lock THROTTLE to 0.
+lock STEERING to heading(90,0).
 
-PRINT "END PROGRAMM".
+print "END PROGRAMM".
 
 
